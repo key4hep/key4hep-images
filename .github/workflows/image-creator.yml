@@ -1,0 +1,43 @@
+# This workflow creates docker images that are then used for:
+#
+# - Key4hep packages CI
+# 
+# All created images are then uploaded to GitHub Container registry
+
+name: Create images
+
+on:
+  push:
+  schedule:
+    # every Sunday
+    - cron:  '0 0 * * 0'
+
+jobs:
+  # Image for running key4hep
+  build:
+    strategy:
+      matrix:
+        image: ["centos7", "alma9", "ubuntu"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: build
+        run: |
+          echo $PWD
+          ls -l
+          docker build -t ${{ matrix.image }} build/${{ matrix.image }}-build
+      - name: tag
+        run: |
+          docker tag ${{ matrix.image }} ghcr.io/key4hep/${{ matrix.image }}:latest
+      - name: show
+        run: docker images
+      - name: login and push
+        env:
+          deploy_secret: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ ! -z ${deploy_secret} ]; then
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io --username ${{ github.actor }} --password-stdin;
+            docker push ghcr.io/key4hep/${{ matrix.image }}:latest;
+          else
+            echo "Skipping deploy no secrets present";
+          fi
