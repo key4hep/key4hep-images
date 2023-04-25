@@ -28,7 +28,7 @@ jobs:
           docker build -t ${{ matrix.image }} Docker/${{ matrix.image }}-build
       - name: tag
         run: |
-          docker tag ${{ matrix.image }} ghcr.io/key4hep/${{ matrix.image }}:latest
+          docker tag ${{ matrix.image }} ghcr.io/key4hep/key4hep-images/${{ matrix.image }}:latest
       - name: show
         run: docker images
       - name: login and push
@@ -37,7 +37,7 @@ jobs:
         run: |
           if [ ! -z ${deploy_secret} ]; then
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io --username ${{ github.actor }} --password-stdin;
-            docker push ghcr.io/key4hep/${{ matrix.image }}:latest;
+            docker push ghcr.io/key4hep/key4hep-images/${{ matrix.image }}:latest;
           else
             echo "Skipping deploy no secrets present";
           fi
