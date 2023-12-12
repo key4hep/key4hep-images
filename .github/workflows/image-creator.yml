@@ -11,6 +11,7 @@ on:
   schedule:
     # every Sunday
     - cron:  '0 0 * * 0'
+  workflow_dispatch:
 
 jobs:
   # Image for running key4hep
