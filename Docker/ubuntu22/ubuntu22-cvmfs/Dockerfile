@@ -16,4 +16,4 @@ RUN apt update && \
 
 COPY mount.sh /mount.sh
 
-ENTRYPOINT ["/bin/bash"]
+CMD ["/bin/bash"]
