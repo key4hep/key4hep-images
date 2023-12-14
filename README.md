@@ -15,8 +15,8 @@ where `<image-name>` can be `centos7-build`, `ubuntu-build` or `alma9-build`.
 
 ``` bash
 docker login ghcr.io
-docker build -t ghcr.io/key4hep/k4-deploy/<image-name> .
-docker push ghcr.io/key4hep/k4-deploy/<image-name>
+docker build -t ghcr.io/key4hep/key4hep-images/<image-name> .
+docker push ghcr.io/key4hep/key4hep-images/<image-name>
 ```
 
 where for the login we have to use our Github username and for the password a
