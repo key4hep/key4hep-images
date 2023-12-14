@@ -8,9 +8,6 @@ name: Create images
 
 on:
   push:
-  schedule:
-    # every Sunday
-    - cron:  '0 0 * * 0'
   workflow_dispatch:
 
 jobs:
@@ -26,10 +23,11 @@ jobs:
         run: |
           echo $PWD
           ls -l
-          docker build -t ${{ matrix.image }} Docker/${{ matrix.image }}-build
+          Docker/${{ matrix.image }}/build.sh
       - name: tag
         run: |
           docker tag ${{ matrix.image }} ghcr.io/key4hep/key4hep-images/${{ matrix.image }}:latest
+          docker tag ${{ matrix.image }}-cvmfs ghcr.io/key4hep/key4hep-images/${{ matrix.image }}-cvmfs:latest
       - name: show
         run: docker images
       - name: login and push
@@ -39,6 +37,7 @@ jobs:
           if [ ! -z ${deploy_secret} ]; then
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io --username ${{ github.actor }} --password-stdin;
             docker push ghcr.io/key4hep/key4hep-images/${{ matrix.image }}:latest;
+            docker push ghcr.io/key4hep/key4hep-images/${{ matrix.image }}-cvmfs:latest;
           else
             echo "Skipping deploy no secrets present";
           fi
