@@ -23,7 +23,8 @@ jobs:
         run: |
           echo $PWD
           ls -l
-          Docker/${{ matrix.image }}/build.sh
+          cd Docker/${{ matrix.image }}
+          ./build.sh
       - name: tag
         run: |
           docker tag ${{ matrix.image }} ghcr.io/key4hep/key4hep-images/${{ matrix.image }}:latest
