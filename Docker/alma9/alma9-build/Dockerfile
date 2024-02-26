@@ -5,7 +5,7 @@ FROM gitlab-registry.cern.ch/linuxsupport/alma9-base
 RUN dnf update -y && \
     dnf groupinstall -y "Development Tools" && \
     dnf install -y vim gfortran wget python3-pip epel-release mesa-libGL mesa-libGL-devel mesa-libGLU mesa-libGLU-devel krb5-devel && \
-    dnf install -y parallel ccache && \
+    dnf install -y parallel ccache mold && \
     dnf clean all
 
 RUN pip install boto3 requests
