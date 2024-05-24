@@ -11,4 +11,4 @@ RUN yum install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-
 
 COPY mount.sh /mount.sh
 
-CMD ["/bin/bash"]
+CMD ["/bin/bash", "-c", "/mount.sh && /bin/bash"]

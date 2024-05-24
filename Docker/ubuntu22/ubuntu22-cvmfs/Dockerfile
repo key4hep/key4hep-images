@@ -16,4 +16,4 @@ RUN apt update && \
 
 COPY mount.sh /mount.sh
 
-CMD ["/bin/bash"]
+CMD ["/bin/bash", "-c", "/mount.sh && /bin/bash"]
