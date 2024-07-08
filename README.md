@@ -9,7 +9,7 @@ docker build -t gitlab-registry.cern.ch/key4hep/k4-deploy/<image-name> .
 docker push gitlab-registry.cern.ch/key4hep/k4-deploy/<image-name>
 ```
 
-where `<image-name>` can be `centos7-build`, `ubuntu-build` or `alma9-build`.
+where `<image-name>` can be `alma9-build` or `ubuntu-build`.
 
 # How to build and push to Github
 

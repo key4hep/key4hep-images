@@ -15,7 +15,7 @@ jobs:
   build:
     strategy:
       matrix:
-        image: ["centos7", "alma9", "ubuntu22"]
+        image: ["alma9", "ubuntu22"]
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
