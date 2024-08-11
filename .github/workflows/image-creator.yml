@@ -15,7 +15,7 @@ jobs:
   build:
     strategy:
       matrix:
-        image: ["alma9", "ubuntu22"]
+        image: ["alma9", "ubuntu22", "ubuntu24"]
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
