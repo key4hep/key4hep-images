@@ -8,6 +8,6 @@ RUN apt update -y && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install boto3 requests
+RUN apt install python3-boto3 python3-requests
 
 CMD ["/bin/bash"]
