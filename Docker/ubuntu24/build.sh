@@ -1,2 +1,2 @@
-docker build -t ubuntu22 ubuntu24-build
-docker build -t ubuntu22-cvmfs ubuntu24-cvmfs
+docker build -t ubuntu24 ubuntu24-build
+docker build -t ubuntu24-cvmfs ubuntu24-cvmfs
