@@ -5,9 +5,8 @@ RUN apt update -y && \
     apt upgrade -y && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
     build-essential git python3 python3-pip vim unzip gfortran file curl wget pkg-config rsync tzdata libgl1-mesa-dev libglu1-mesa libglu1-mesa-dev libkrb5-dev ccache mold && \
+    python3-boto3 python3-requests && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
-
-RUN apt install python3-boto3 python3-requests
 
 CMD ["/bin/bash"]
