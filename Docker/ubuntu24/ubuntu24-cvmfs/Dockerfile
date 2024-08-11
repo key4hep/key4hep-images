@@ -1,4 +1,4 @@
-FROM ubuntu24
+FROM ubuntu24.04
 
 RUN apt update && \
     apt install -y lsb-release && \
