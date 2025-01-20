@@ -2,7 +2,7 @@ FROM ubuntu22
 
 RUN apt update && \
     apt install -y lsb-release && \
-    wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb && \
+    wget https://cvmrepo.s3.cern.ch/cvmrepo/apt/cvmfs-release-latest_all.deb && \
     dpkg -i cvmfs-release-latest_all.deb && \
     rm -rf cvmfs-release-latest_all.deb && \
     apt update && \
