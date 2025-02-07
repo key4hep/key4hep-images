@@ -3,11 +3,21 @@ FROM gitlab-registry.cern.ch/linuxsupport/alma9-base
 # epel-release and parallel needed for the validation
 # wget needed for some tests
 RUN dnf update -y && \
-    dnf groupinstall -y "Development Tools" && \
-    dnf install -y vim gfortran wget python3-pip epel-release mesa-libGL mesa-libGL-devel mesa-libGLU mesa-libGLU-devel krb5-devel && \
-    dnf install -y parallel ccache mold && \
+    # dnf groupinstall -y "Development Tools" && \
+    dnf install -y \
+                   # Needed for compiling
+                   glibc-headers glibc-devel \
+                   # Requirements
+                   mesa-libGL mesa-libGL-devel mesa-libGLU mesa-libGLU-devel krb5-devel \
+                   # Tools
+                   git patch vim wget epel-release \
+                   # For fetching commits of packages
+                   python3-requests python3-yaml && \
+    # For building and CI
+    dnf install -y ccache mold && \
+    dnf remove -y NetworkManager llvm-libs xorg-x11-fonts-ISO8859-1-100dpi dejavu-sans-fonts selinux-policy && \
+    # We don't need valgrind but mesa-libGL-devel depends on it
+    rpm -e --nodeps valgrind valgrind-devel gl-manpages git-core-doc grub2-common grub2-efi-x64 grub2-tools-minimal emacs-filesystem systemd systemd-udev systemd-libs systemd-pam && \
     dnf clean all
-
-RUN pip install boto3 requests
 
 CMD ["/bin/bash"]
