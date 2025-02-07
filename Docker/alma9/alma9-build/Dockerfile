@@ -17,7 +17,7 @@ RUN dnf update -y && \
     dnf install -y ccache mold && \
     dnf remove -y NetworkManager llvm-libs xorg-x11-fonts-ISO8859-1-100dpi dejavu-sans-fonts selinux-policy && \
     # We don't need valgrind but mesa-libGL-devel depends on it
-    rpm -e --nodeps valgrind valgrind-devel gl-manpages git-core-doc grub2-common grub2-efi-x64 grub2-tools-minimal emacs-filesystem systemd systemd-udev systemd-libs systemd-pam && \
+    rpm -e --nodeps --quiet valgrind valgrind-devel gl-manpages git-core-doc grub2-common grub2-efi-x64 grub2-tools-minimal emacs-filesystem systemd systemd-udev systemd-libs systemd-pam || true && \
     dnf clean all
 
 CMD ["/bin/bash"]
