@@ -10,6 +10,7 @@ RUN dnf install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-
     dnf clean all
 
 COPY mount.sh /mount.sh
+RUN chmod +x /mount.sh
 
-ENTRYPOINT ["/bin/sh", "-c", "/mount.sh"]
+ENTRYPOINT ["/mount.sh"]
 CMD ["/bin/bash"]
