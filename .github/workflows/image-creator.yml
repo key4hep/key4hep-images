@@ -47,3 +47,36 @@ jobs:
           else
             echo "Skipping deploy no secrets present";
           fi
+
+            # Image for running key4hep
+  build-arm:
+    strategy:
+      matrix:
+        image: ["alma9", "ubuntu22", "ubuntu24"]
+      fail-fast: false
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: build
+        run: |
+          echo $PWD
+          ls -l
+          cd Docker/${{ matrix.image }}
+          ./build.sh
+      - name: tag
+        run: |
+          docker tag ${{ matrix.image }} ghcr.io/key4hep/key4hep-images/${{ matrix.image }}:latest
+          docker tag ${{ matrix.image }}-cvmfs ghcr.io/key4hep/key4hep-images/${{ matrix.image }}-cvmfs:latest
+      - name: show
+        run: docker images
+      - name: login and push
+        env:
+          deploy_secret: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ ! -z ${deploy_secret} ]; then
+            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io --username ${{ github.actor }} --password-stdin;
+            docker push ghcr.io/key4hep/key4hep-images/${{ matrix.image }}:latest;
+            docker push ghcr.io/key4hep/key4hep-images/${{ matrix.image }}-cvmfs:latest;
+          else
+            echo "Skipping deploy no secrets present";
+          fi
