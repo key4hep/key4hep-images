@@ -7,6 +7,7 @@ At the moment, these are the images that are built:
 - `alma9` and `alma9-cvmfs`. `alma9` is used to build the Key4hep stack while
   `alma9-cvmfs` also has CVMFS installed.
 - `ubuntu22` and `ubuntu22-cvmfs`, same as above for Ubuntu 22.04.
+- `ubuntu24` and `ubuntu24-cvmfs`, same as above for Ubuntu 24.04.
 
 The images are deployed to `gitlab-registry.cern.ch` and `ghcr.io` and can be
 found under:
@@ -16,6 +17,10 @@ gitlab-registry.cern.ch/key4hep/k4-deploy/<image-name>
 and
 ```
 ghcr.io/key4hep/key4hep-images/<image-name>
+```
+and on `/cvmfs/unpacked.cern.ch`
+```
+/cvmfs/unpacked.cern.ch/gitlab-registry.cern.ch/key4hep/k4-deploy/<image-name>\:latest
 ```
 where `<image-name>` is `alma9`, `alma9-cvmfs`, etc.
 
