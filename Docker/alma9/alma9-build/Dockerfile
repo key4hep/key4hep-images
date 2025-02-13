@@ -12,7 +12,9 @@ RUN dnf update -y && \
                    # Tools
                    git patch vim wget epel-release \
                    # For fetching commits of packages
-                   python3-requests python3-yaml && \
+                   python3-requests python3-yaml \
+                   # Needed by LCG
+                   zlib-devel libuuid-devel && \
     # For building and CI
     dnf install -y ccache mold && \
     dnf remove -y NetworkManager llvm-libs xorg-x11-fonts-ISO8859-1-100dpi dejavu-sans-fonts selinux-policy && \
