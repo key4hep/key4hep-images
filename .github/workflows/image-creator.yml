@@ -50,6 +50,7 @@ jobs:
 
             # Image for running key4hep
   build-arm:
+    needs: build
     strategy:
       matrix:
         image: ["alma9", "ubuntu22", "ubuntu24"]
