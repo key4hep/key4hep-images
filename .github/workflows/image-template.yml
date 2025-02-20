@@ -41,8 +41,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          context: ./Docker/${{ inputs.image }}/${{ inputs.image }}-${{ inputs.image-type }}
-          file: Dockerfile
+          file: ./Docker/${{ inputs.image }}/${{ inputs.image }}-${{ inputs.image-type }}/Dockerfile
           build-args: |
             REPOSITORY=${{ github.repository }}
           tags: ${{ steps.meta.outputs.tags }}
