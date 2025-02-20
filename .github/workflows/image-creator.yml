@@ -21,9 +21,11 @@ jobs:
       fail-fast: false
       matrix:
         image: ["alma9", "ubuntu22", "ubuntu24"]
+        platform: ["linux/amd64", "linux/arm64"]
     uses: ./.github/workflows/image-template.yml
     with:
       image: ${{ matrix.image }}
+      platform: ${{ matrix.platform }}
       image-type: build
   build-cvmfs:
     needs: build
@@ -35,5 +37,6 @@ jobs:
     uses: ./.github/workflows/image-template.yml
     with:
       image: ${{ matrix.image }}
+      platform: ${{ matrix.platform }}
       image-type: cvmfs
   
