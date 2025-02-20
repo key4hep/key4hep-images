@@ -3,7 +3,10 @@ name: Image template
 on:
   workflow_call:
     inputs:
-      target:
+      image:
+        required: true
+        type: string
+      runner:
         required: true
         type: string
 
