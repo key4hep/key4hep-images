@@ -19,27 +19,13 @@ env:
 
 jobs:
   # Image for running key4hep
-  setup:
-    runs-on: ubuntu-latest
+  build:
     strategy:
       fail-fast: false
       matrix:
         image: ["alma9", "ubuntu22", "ubuntu24"]
-        platform: ["linux/amd64", "linux/arm64"]
-    outputs:
-      runner: ${{ steps.step1.outputs.runner }}
-    steps:
-      - name: Check platform
-        id: step1
-        run: |
-          if [ ${{ matrix.platform }} == 'linux/amd64' ]; then
-            echo "runner=ubuntu-latest" >> $GITHUB_OUTPUT
-          else
-            echo "runner=ubuntu-24.04-arm" >> $GITHUB_OUTPUT
-          fi
-  build:
-    needs: setup
-    runs-on: ${{ needs.setup.outputs.runner }}
+        os: ["ubuntu-latest", "ubuntu-24.04-arm"]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
@@ -60,7 +46,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          platforms: ${{ matrix.platform }}
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
@@ -69,12 +54,12 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
   build-cvmfs:
     needs: build
-    runs-on: ${{ needs.setup.outputs.runner }}
     strategy:
       fail-fast: false
       matrix:
         image: ["alma9", "ubuntu22", "ubuntu24"]
-        platform: ["linux/amd64", "linux/arm64"]
+        os: ["ubuntu-latest", "ubuntu-24.04-arm"]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
@@ -95,7 +80,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          platforms: ${{ matrix.platform }}
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
