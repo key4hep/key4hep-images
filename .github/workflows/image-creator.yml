@@ -45,8 +45,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          context: ./Docker/${{ matrix.image }}
-          file: ./Docker/${{ matrix.image }}/Dockerfile
+          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
+          file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
   build-cvmfs:
@@ -76,8 +76,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          context: ./Docker/${{ matrix.image }}
-          file: ./Docker/${{ matrix.image }}-cvmfs/Dockerfile
+          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs
+          file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
   build-arm:
@@ -107,8 +107,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          context: ./Docker/${{ matrix.image }}
-          file: ./Docker/${{ matrix.image }}-build/Dockerfile
+          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
+          file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
   build-arm-cvmfs:
@@ -138,7 +138,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          context: ./Docker/${{ matrix.image }}
-          file: ./Docker/${{ matrix.image }}-cvmfs/Dockerfile
+          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs
+          file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
