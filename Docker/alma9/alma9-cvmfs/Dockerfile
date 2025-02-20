@@ -1,5 +1,5 @@
-ARG REPOSITORY=key4hep
-FROM ${REPOSITORY}/key4hep-images/alma9
+ARG REPOSITORY=key4hep/key4hep-images
+FROM ${REPOSITORY}/alma9
 
 RUN dnf install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm && \
     dnf install -y cvmfs && \
