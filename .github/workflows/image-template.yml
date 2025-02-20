@@ -6,6 +6,9 @@ on:
       image:
         required: true
         type: string
+      image-type:
+        required: true
+        type: string
       runner:
         required: true
         type: string
@@ -38,8 +41,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          context: ./Docker/${{ inputs.image }}/${{ inputs.image }}
-          file: ./Docker/${{ inputs.image }}/${{ inputs.image }}/Dockerfile
+          context: ./Docker/${{ inputs.image }}/${{ inputs.image }}-${{ inputs.image-type }}
+          file: Dockerfile
           build-args: |
             REPOSITORY=${{ github.repository }}
           tags: ${{ steps.meta.outputs.tags }}
