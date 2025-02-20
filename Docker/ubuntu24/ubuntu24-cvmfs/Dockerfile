@@ -1,4 +1,5 @@
-FROM ubuntu24
+ARG REPOSITORY=key4hep/key4hep-images
+FROM ${REPOSITORY}/ubuntu24
 
 RUN apt update && \
     apt install -y lsb-release && \
