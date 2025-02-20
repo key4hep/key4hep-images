@@ -13,6 +13,9 @@ on:
         required: true
         type: string
 
+env:
+  REGISTRY: ghcr.io
+
 jobs:
   build:
     runs-on: ${{ inputs.runner }}
@@ -25,14 +28,14 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Docker Meta
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/key4hep-images/${{ inputs.image }}
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.image }}-${{ inputs.image-type }}
       - name: Build and Push
         id: docker_build
         uses: docker/build-push-action@v6
