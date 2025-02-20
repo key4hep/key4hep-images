@@ -43,6 +43,7 @@ jobs:
           push: true
           file: ./Docker/${{ inputs.image }}/${{ inputs.image }}-${{ inputs.image-type }}/Dockerfile
           build-args: |
+            REGISTRY=${{ env.REGISTRY }}
             REPOSITORY=${{ github.repository }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
