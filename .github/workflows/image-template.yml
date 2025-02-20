@@ -9,16 +9,13 @@ on:
       image-type:
         required: true
         type: string
-      runner:
-        required: true
-        type: string
 
 env:
   REGISTRY: ghcr.io
 
 jobs:
   build:
-    runs-on: ${{ inputs.runner }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
     steps:
@@ -35,12 +32,13 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.image }}-${{ inputs.image-type }}
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.image }}
       - name: Build and Push
         id: docker_build
         uses: docker/build-push-action@v6
         with:
           push: true
+          platforms: ["linux/amd64", "linux/arm64"]
           file: ./Docker/${{ inputs.image }}/${{ inputs.image }}-${{ inputs.image-type }}/Dockerfile
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
