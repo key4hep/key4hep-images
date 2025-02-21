@@ -24,8 +24,7 @@ jobs:
       fail-fast: true
       matrix:
         image: ["alma9", "ubuntu22", "ubuntu24"]
-        os: ["ubuntu-latest", "ubuntu-24.04-arm"]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
@@ -46,6 +45,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          platforms: linux/amd64,linux/arm64
           context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile
           build-args: |
@@ -59,8 +59,7 @@ jobs:
       fail-fast: false
       matrix:
         image: ["alma9", "ubuntu22", "ubuntu24"]
-        os: ["ubuntu-latest", "ubuntu-24.04-arm"]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
@@ -81,6 +80,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          platforms: linux/amd64,linux/arm64
           context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
           build-args: |
