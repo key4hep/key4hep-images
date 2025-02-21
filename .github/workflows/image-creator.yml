@@ -51,7 +51,7 @@ jobs:
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
             REPOSITORY=${{ github.repository }}
-          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}
+          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           labels: ${{ steps.meta.outputs.labels }}
   build-cvmfs:
     needs: build
@@ -88,7 +88,7 @@ jobs:
             REPOSITORY=${{ github.repository }}
             BRANCH=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
             TYPE=
-          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs
+          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           labels: ${{ steps.meta.outputs.labels }}
   # Image for running key4hep
   build-arm:
@@ -124,7 +124,7 @@ jobs:
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
             REPOSITORY=${{ github.repository }}
-          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-arm
+          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-arm:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           labels: ${{ steps.meta.outputs.labels }}
   build-arm-cvmfs:
     needs: build-arm
@@ -161,5 +161,5 @@ jobs:
             REPOSITORY=${{ github.repository }}
             BRANCH=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
             TYPE=-arm
-          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-arm-cvmfs
+          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-arm-cvmfs:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           labels: ${{ steps.meta.outputs.labels }}
