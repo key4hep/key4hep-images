@@ -21,7 +21,7 @@ jobs:
   # Image for running key4hep
   build:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         image: ["alma9", "ubuntu22", "ubuntu24"]
         os: ["ubuntu-latest", "ubuntu-24.04-arm"]
@@ -46,6 +46,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
@@ -80,6 +81,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
+          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
