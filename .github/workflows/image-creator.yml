@@ -86,6 +86,7 @@ jobs:
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
             REPOSITORY=${{ github.repository }}
+            BRANCH=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
   # Image for running key4hep
