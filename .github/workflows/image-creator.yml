@@ -81,7 +81,7 @@ jobs:
         with:
           push: true
           platforms: linux/amd64
-          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
+          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
@@ -152,7 +152,7 @@ jobs:
         with:
           push: true
           platforms: linux/arm64
-          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
+          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
           build-args: |
             REGISTRY=${{ env.REGISTRY }}
