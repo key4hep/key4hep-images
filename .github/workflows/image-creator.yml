@@ -111,7 +111,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-arm
       - name: Build and Push
         id: docker_build
         uses: docker/build-push-action@v6
@@ -146,7 +146,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-arm
       - name: Build and Push
         id: docker_build
         uses: docker/build-push-action@v6
