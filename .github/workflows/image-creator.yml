@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        image: ["alma9", "ubuntu22", "ubuntu24"]
+        image: ["alma9", "ubuntu24"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -45,7 +45,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          platforms: linux/amd64
+          platforms: linux/amd64, linux/arm64
           context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile
           build-args: |
@@ -58,7 +58,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: ["alma9", "ubuntu22", "ubuntu24"]
+        image: ["alma9", "ubuntu24"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -80,7 +80,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          platforms: linux/amd64
+          platforms: linux/amd64, linux/arm64
           context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
           build-args: |
@@ -90,6 +90,7 @@ jobs:
             TYPE=
           tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           labels: ${{ steps.meta.outputs.labels }}
+  '''
   # Image for running key4hep
   build-arm:
     needs: build
@@ -163,3 +164,4 @@ jobs:
             TYPE=-arm
           tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-arm-cvmfs:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           labels: ${{ steps.meta.outputs.labels }}
+  '''
