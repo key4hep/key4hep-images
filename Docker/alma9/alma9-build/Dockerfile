@@ -13,6 +13,8 @@ RUN dnf update -y && \
                    git patch vim wget epel-release \
                    # For fetching commits of packages
                    python3-requests python3-yaml \
+                   # Needed by Spack
+                   bzip2 unzip \
                    # Needed by LCG
                    zlib-devel libuuid-devel && \
     # For building and CI
