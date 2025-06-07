@@ -6,7 +6,7 @@ RUN dnf update -y && \
     # dnf groupinstall -y "Development Tools" && \
     dnf install -y \
                    # Needed for compiling
-                   glibc-headers glibc-devel \
+                   glibc-headers glibc-devel diffutils \
                    # Requirements
                    mesa-libGL mesa-libGL-devel mesa-libGLU mesa-libGLU-devel krb5-devel \
                    # Tools
