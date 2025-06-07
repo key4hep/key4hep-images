@@ -19,9 +19,9 @@ RUN dnf update -y && \
                    zlib-devel libuuid-devel && \
     # For building and CI
     dnf install -y ccache mold && \
-    dnf remove -y NetworkManager llvm-libs xorg-x11-fonts-ISO8859-1-100dpi dejavu-sans-fonts selinux-policy && \
+    # dnf remove -y NetworkManager xorg-x11-fonts-ISO8859-1-100dpi dejavu-sans-fonts selinux-policy && \
     # We don't need valgrind but mesa-libGL-devel depends on it
-    for pkg in valgrind valgrind-devel gl-manpages git-core-doc grub2-common grub2-efi-x64 grub2-tools-minimal emacs-filesystem systemd systemd-udev systemd-libs systemd-pam; do \
+    for pkg in valgrind valgrind-devel gl-manpages git-core-doc grub2-common grub2-efi-x64 grub2-tools-minimal emacs-filesystem systemd systemd-udev systemd-libs systemd-pam llvm-libs; do \
         rpm -e --nodeps "$pkg" || true; \
     done && \
     dnf clean all
