@@ -17,6 +17,8 @@ RUN dnf update -y && \
                    bzip2 unzip \
                    # Needed by LCG
                    zlib-devel libuuid-devel && \
+                   # Useful to have
+                   strace && \
     # For building and CI
     dnf install -y ccache mold && \
     # dnf remove -y NetworkManager xorg-x11-fonts-ISO8859-1-100dpi dejavu-sans-fonts selinux-policy && \
