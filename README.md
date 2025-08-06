@@ -24,7 +24,10 @@ and on `/cvmfs/unpacked.cern.ch`
 ```
 where `<image-name>` is `alma9`, `alma9-cvmfs`, etc.
 
-
+Note that the images are intended to be used for building and continuous
+integration, and may not have packages that are needed for development. In this
+case, an image containing those packages can always be built using as base one
+of the provided ones.
 
 # How to build and push to gitlab
 
@@ -47,3 +50,29 @@ docker push ghcr.io/key4hep/key4hep-images/<image-name>
 where for the login we have to use our Github username and for the password a
 classic token (refined is not supported at the moment of writing) with the
 permissions `read:packages`, `write:packages` and `delete:packages`.
+
+# How to use the cvmfs images on CI
+
+The following is an example of a minimal job that lists the contents of
+`/cvmfs/sw.hsf.org`:
+
+``` bash
+name: List /cvmfs in Key4hep Image
+
+on: [push, pull_request]
+
+jobs:
+  list-cvmfs:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/key4hep/key4hep-images/alma9-cvmfs
+      volumes:
+        - /cvmfs:/cvmfs
+      options: --privileged
+    steps:
+      # Mandatory step
+      - name: Set up cvmfs
+        run: /mount.sh
+      - name: List contents of /cvmfs
+        run: ls -l /cvmfs/sw.hsf.org/
+```
