@@ -1,4 +1,5 @@
 #!/bin/bash
-/usr/sbin/automount
+pkill automount
+cvmfs_config setup
 
 exec "$@"
