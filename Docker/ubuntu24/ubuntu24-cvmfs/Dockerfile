@@ -16,4 +16,7 @@ RUN apt update && \
 
 COPY mount.sh /mount.sh
 
-CMD ["/bin/bash", "-c", "/mount.sh && /bin/bash"]
+RUN chmod +x /mount.sh
+
+ENTRYPOINT ["/mount.sh"]
+CMD ["/bin/bash"]
