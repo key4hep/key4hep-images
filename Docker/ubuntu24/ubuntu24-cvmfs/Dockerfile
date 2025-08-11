@@ -2,7 +2,7 @@ ARG REGISTRY=ghcr.io
 ARG REPOSITORY=key4hep/key4hep-images
 ARG BRANCH=main
 ARG TYPE=
-FROM ${REGISTRY}/${REPOSITORY}/ubuntu24${TYPE}:${BRANCH}
+FROM ${REGISTRY}/${REPOSITORY}/ubuntu24:${BRANCH}
 
 RUN apt update && \
     apt install -y lsb-release && \
