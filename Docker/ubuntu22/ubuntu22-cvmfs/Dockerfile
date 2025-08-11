@@ -1,7 +1,6 @@
 ARG REGISTRY=ghcr.io
 ARG REPOSITORY=key4hep/key4hep-images
 ARG BRANCH=main
-ARG TYPE=
 FROM ${REGISTRY}/${REPOSITORY}/ubuntu22:${BRANCH}
 
 RUN apt update && \
