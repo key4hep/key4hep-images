@@ -48,8 +48,8 @@ jobs:
           platforms: linux/amd64, linux/arm64
           context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile
-          labels: ${{ steps.meta.outputs.labels }}
           tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
+          labels: ${{ steps.meta.outputs.labels }}
   build-cvmfs:
     needs: build
     strategy:
@@ -80,5 +80,9 @@ jobs:
           platforms: linux/amd64, linux/arm64
           context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
+          build-args: |
+            REGISTRY=${{ env.REGISTRY }}
+            REPOSITORY=${{ github.repository }}
+            BRANCH=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           labels: ${{ steps.meta.outputs.labels }}

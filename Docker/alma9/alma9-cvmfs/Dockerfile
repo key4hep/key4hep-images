@@ -1,4 +1,7 @@
-FROM alma9
+ARG REGISTRY=ghcr.io
+ARG REPOSITORY=key4hep/key4hep-images
+ARG BRANCH=main
+FROM ${REGISTRY}/${REPOSITORY}/alma9:${BRANCH}
 
 RUN dnf install -y https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest.noarch.rpm && \
     dnf install -y cvmfs && \
