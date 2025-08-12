@@ -87,5 +87,4 @@ jobs:
             REGISTRY=${{ env.REGISTRY }}
             REPOSITORY=${{ github.repository }}
             BRANCH=${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
-          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           labels: ${{ steps.meta.outputs.labels }}
