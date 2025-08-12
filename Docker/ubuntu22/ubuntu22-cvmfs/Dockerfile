@@ -1,4 +1,7 @@
-FROM ubuntu22
+ARG REGISTRY=ghcr.io
+ARG REPOSITORY=key4hep/key4hep-images
+ARG BRANCH=main
+FROM ${REGISTRY}/${REPOSITORY}/ubuntu22:latest
 
 RUN apt update && \
     apt install -y lsb-release && \

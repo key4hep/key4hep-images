@@ -1,4 +1,7 @@
-FROM ubuntu24
+ARG REGISTRY=ghcr.io
+ARG REPOSITORY=key4hep/key4hep-images
+ARG BRANCH=main
+FROM ${REGISTRY}/${REPOSITORY}/ubuntu24:latest
 
 RUN apt update && \
     apt install -y lsb-release && \
@@ -16,4 +19,7 @@ RUN apt update && \
 
 COPY mount.sh /mount.sh
 
-CMD ["/bin/bash", "-c", "/mount.sh && /bin/bash"]
+RUN chmod +x /mount.sh
+
+ENTRYPOINT ["/mount.sh"]
+CMD ["/bin/bash"]
