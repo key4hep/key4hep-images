@@ -7,8 +7,7 @@
 name: Create images
 
 on:
-  push:
-    - main
+  push: ["main"]
   workflow_dispatch:
 
 concurrency:
