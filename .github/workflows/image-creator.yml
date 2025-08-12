@@ -8,6 +8,7 @@ name: Create images
 
 on:
   push:
+    - main
   workflow_dispatch:
 
 concurrency:
@@ -23,7 +24,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        image: ["alma9", "ubuntu24"]
+        image: ["alma9", "ubuntu22", "ubuntu24"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,7 +57,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: ["alma9", "ubuntu24"]
+        image: ["alma9", "ubuntu22", "ubuntu24"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
