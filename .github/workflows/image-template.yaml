@@ -23,7 +23,22 @@ permissions:
   attestations: write
 
 jobs:
+  compose-image-name:
+    runs-on: ubuntu-latest
+    outputs:
+      image-name: ${{ steps.image_name.outputs.IMAGE_NAME }}
+    steps:
+      - name: Compose Image Name
+        id: image_name
+        run: |
+          if [ "${{ inputs.image-type }}" == "build" ]; then
+            echo "IMAGE_NAME=${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.os }}" >> $GITHUB_OUTPUT
+          else
+            echo "IMAGE_NAME=${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.os }}-${{ inputs.image-type }}" >> $GITHUB_OUTPUT
+          fi
+
   build-linux-amd64:
+    needs: compose-image-name
     uses: ./.github/workflows/docker-build-push-template.yaml
     with:
       os: ${{ inputs.os }}
@@ -31,8 +46,10 @@ jobs:
       platform: amd64
       registry: ${{ inputs.registry }}
       image-type: ${{ inputs.image-type }}
+      image-name: ${{ needs.compose-image-name.outputs.image-name }}
   
   build-linux-arm64:
+    needs: compose-image-name
     uses: ./.github/workflows/docker-build-push-template.yaml
     with:
       os: ${{ inputs.os }}
@@ -40,6 +57,7 @@ jobs:
       platform: arm64
       registry: ${{ inputs.registry }}
       image-type: ${{ inputs.image-type }}
+      image-name: ${{ needs.compose-image-name.outputs.image-name }}
 
   publish-multiarch:
     needs:
@@ -53,19 +71,11 @@ jobs:
           registry: ${{ inputs.registry }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Compose Image Name
-        id: image_name
-        run: |
-          if [ "${{ inputs.image-type }}" == "build" ]; then
-            echo "IMAGE_NAME=${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.os }}" >> $GITHUB_OUTPUT
-          else
-            echo "IMAGE_NAME=${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.os }}-${{ inputs.image-type }}" >> $GITHUB_OUTPUT
-          fi
       - name: Docker Meta
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ steps.image_name.outputs.IMAGE_NAME }}
+          images: ${{ steps.compose-image-name.outputs.image-name }}
           flavor: latest=${{ github.ref == 'refs/heads/main' }}
       - name: Change string case for amd64
         id: lowercase-amd64

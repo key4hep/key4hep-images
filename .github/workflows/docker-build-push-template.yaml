@@ -20,6 +20,9 @@ on:
       image-type:
         required: true
         type: string
+      image-name:
+        required: true
+        type: string
     outputs:
       image-uri:
         description: "The URI of the built image with digest"
@@ -35,7 +38,7 @@ jobs:
   build-and-push:
     runs-on: ${{ inputs.runner }}
     outputs:
-      image-uri: ${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.os }}-${{ inputs.image-type }}:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}-${{ inputs.platform }}@${{ steps.build.outputs.digest }}
+      image-uri: ${{ inputs.image-name }}:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}-${{ inputs.platform }}@${{ steps.build.outputs.digest }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -49,19 +52,11 @@ jobs:
           registry: ${{ inputs.registry }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Compose Image Name
-        id: image_name
-        run: |
-          if [ "${{ inputs.image-type }}" == "build" ]; then
-            echo "IMAGE_NAME=${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.os }}" >> $GITHUB_OUTPUT
-          else
-            echo "IMAGE_NAME=${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.os }}-${{ inputs.image-type }}" >> $GITHUB_OUTPUT
-          fi
       - name: Docker Meta
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ steps.image_name.outputs.IMAGE_NAME }}
+          images: ${{ inputs.image-name }}
           flavor: latest=false,suffix=-${{ inputs.platform }}
       - name: Build and Push
         id: docker_build
