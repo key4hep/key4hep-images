@@ -5,7 +5,7 @@ description: |
 on:
   workflow_call:
     inputs:
-      image:
+      os:
         required: true
         type: string
       registry:
@@ -14,7 +14,7 @@ on:
       image-type:
         required: false
         type: string
-        default: sim
+        default: build
 
 permissions:
   contents: read
@@ -26,7 +26,7 @@ jobs:
   build-linux-amd64:
     uses: ./.github/workflows/docker-build-push-template.yaml
     with:
-      image: ${{ inputs.image }}
+      os: ${{ inputs.os }}
       runner: ubuntu-latest
       platform: amd64
       registry: ${{ inputs.registry }}
@@ -35,7 +35,7 @@ jobs:
   build-linux-arm64:
     uses: ./.github/workflows/docker-build-push-template.yaml
     with:
-      image: ${{ inputs.image }}
+      os: ${{ inputs.os }}
       runner: ubuntu-24.04-arm
       platform: arm64
       registry: ${{ inputs.registry }}
@@ -53,11 +53,19 @@ jobs:
           registry: ${{ inputs.registry }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Compose Image Name
+        id: image_name
+        run: |
+          if [ "${{ inputs.image-type }}" == "build" ]; then
+            echo "IMAGE_NAME=${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.os }}" >> $GITHUB_OUTPUT
+          else
+            echo "IMAGE_NAME=${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.os }}-${{ inputs.image-type }}" >> $GITHUB_OUTPUT
+          fi
       - name: Docker Meta
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.image }}-${{ inputs.image-type }}
+          images: ${{ steps.image_name.outputs.IMAGE_NAME }}
           flavor: latest=${{ github.ref == 'refs/heads/main' }}
       - name: Change string case for amd64
         id: lowercase-amd64

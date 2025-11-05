@@ -5,7 +5,7 @@ description: |
 on:
   workflow_call:
     inputs:
-      image:
+      os:
         required: true
         type: string
       runner:
@@ -35,7 +35,7 @@ jobs:
   build-and-push:
     runs-on: ${{ inputs.runner }}
     outputs:
-      image-uri: ${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.image }}-${{ inputs.image-type }}:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}-${{ inputs.platform }}@${{ steps.build.outputs.digest }}
+      image-uri: ${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.os }}-${{ inputs.image-type }}:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}-${{ inputs.platform }}@${{ steps.build.outputs.digest }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -49,11 +49,19 @@ jobs:
           registry: ${{ inputs.registry }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Compose Image Name
+        id: image_name
+        run: |
+          if [ "${{ inputs.image-type }}" == "build" ]; then
+            echo "IMAGE_NAME=${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.os }}" >> $GITHUB_OUTPUT
+          else
+            echo "IMAGE_NAME=${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.os }}-${{ inputs.image-type }}" >> $GITHUB_OUTPUT
+          fi
       - name: Docker Meta
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ inputs.registry }}/${{ github.repository_owner }}/key4hep-images/${{ inputs.image }}-${{ inputs.image-type }}
+          images: ${{ steps.image_name.outputs.IMAGE_NAME }}
           flavor: latest=false,suffix=-${{ inputs.platform }}
       - name: Build and Push
         id: docker_build
@@ -61,7 +69,7 @@ jobs:
         with:
           push: true
           platforms: linux/${{ inputs.platform }}
-          context: ./Docker/${{ inputs.image }}/${{ inputs.image }}-${{ inputs.image-type }}
-          file: ./Docker/${{ inputs.image }}/${{ inputs.image }}-${{ inputs.image-type }}/Dockerfile
+          context: ./Docker/${{ inputs.os }}/${{ inputs.os }}-${{ inputs.image-type }}
+          file: ./Docker/${{ inputs.os }}/${{ inputs.os }}-${{ inputs.image-type }}/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

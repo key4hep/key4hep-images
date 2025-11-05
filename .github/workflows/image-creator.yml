@@ -22,19 +22,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: ["alma9", "ubuntu22", "ubuntu24"]
+        os: ["alma9", "ubuntu22", "ubuntu24"]
     with:
-      image: ${{ matrix.image }}
+      os: ${{ matrix.os }}
       registry: ghcr.io
-      image-type: build
   build-cvmfs:
     needs: build
     uses: ./.github/workflows/image-template.yaml
     strategy:
       fail-fast: false
       matrix:
-        image: ["alma9", "ubuntu22", "ubuntu24"]
+        os: ["alma9", "ubuntu22", "ubuntu24"]
     with:
-      image: ${{ matrix.image }}
+      os: ${{ matrix.os }}
       registry: ghcr.io
       image-type: cvmfs
