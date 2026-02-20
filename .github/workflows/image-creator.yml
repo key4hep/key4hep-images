@@ -10,6 +10,7 @@ on:
   push:
     branches:
       - main
+  pull_request:
   workflow_dispatch:
 
 concurrency:
@@ -46,7 +47,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64, linux/arm64
           context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile
@@ -79,7 +80,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v6
         with:
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64, linux/arm64
           context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
