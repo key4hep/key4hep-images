@@ -18,7 +18,9 @@ RUN dnf update -y && \
                    # Needed by LCG
                    zlib-devel libuuid-devel \
                    # Useful to have
-                   strace && \
+                   strace \
+                   # Needed for LCG
+                   motif motif-devel && \
     # For building and CI
     dnf install -y ccache mold && \
     # dnf remove -y NetworkManager xorg-x11-fonts-ISO8859-1-100dpi dejavu-sans-fonts selinux-policy && \
