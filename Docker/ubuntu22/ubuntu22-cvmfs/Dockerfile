@@ -5,7 +5,7 @@ FROM ${REGISTRY}/${REPOSITORY}/ubuntu22:latest
 
 RUN apt update && \
     apt install -y lsb-release && \
-    wget https://cvmrepo.s3.cern.ch/cvmrepo/apt/cvmfs-release-latest_all.deb && \
+    wget https://ecsft.cern.ch/dist/cvmfs/cvmfs-release/cvmfs-release-latest_all.deb && \
     dpkg -i cvmfs-release-latest_all.deb && \
     rm -rf cvmfs-release-latest_all.deb && \
     apt update && \
@@ -19,4 +19,7 @@ RUN apt update && \
 
 COPY mount.sh /mount.sh
 
-CMD ["/bin/bash", "-c", "/mount.sh && /bin/bash"]
+RUN chmod +x /mount.sh
+
+ENTRYPOINT ["/mount.sh"]
+CMD ["/bin/bash"]

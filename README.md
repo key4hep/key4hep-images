@@ -66,8 +66,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/key4hep/key4hep-images/alma9-cvmfs
-      volumes:
-        - /cvmfs:/cvmfs
       options: --privileged
     steps:
       # Mandatory step
