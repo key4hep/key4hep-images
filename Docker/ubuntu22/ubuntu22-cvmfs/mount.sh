@@ -1,4 +1,4 @@
 #!/bin/bash
-/usr/sbin/automount
+cvmfs_config setup
 
 exec "$@"
