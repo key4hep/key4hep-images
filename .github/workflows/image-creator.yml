@@ -89,7 +89,7 @@ jobs:
         run: >-
           docker run --rm --privileged
           ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:ci
-          /bin/bash -lc "ls -l /cvmfs/sw.hsf.org/"
+          /bin/bash -lc "ls -l /cvmfs/sw.hsf.org/ && ls /cvmfs/sw.hsf.org/ | grep -q ."
   push-cvmfs:
     needs: build-cvmfs
     if: ${{ github.event_name != 'pull_request' }}
