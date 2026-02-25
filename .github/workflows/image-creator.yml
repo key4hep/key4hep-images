@@ -98,6 +98,8 @@ jobs:
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
           build-args: |
             BASE_IMAGE=base-image:local
+          build-contexts: |
+            base-image:local=docker-image://base-image:local
           tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:ci
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:buildcache
