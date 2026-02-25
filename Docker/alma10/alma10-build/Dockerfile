@@ -17,9 +17,7 @@ RUN dnf update -y && \
                    # Needed by LCG
                    zlib-devel libuuid-devel \
                    # Useful to have
-                   strace \
-                   # Needed for LCG
-                   motif motif-devel && \
+                   strace && \
     # For building and CI
     dnf install -y ccache mold && \
     # We don't need valgrind but mesa-libGL-devel depends on it
