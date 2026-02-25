@@ -79,6 +79,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}
       - name: Build base image locally
+        if: github.event_name == 'pull_request'
         run: |
           docker build \
             -t base-image:local \
@@ -87,7 +88,7 @@ jobs:
       - name: Build and load amd64 for testing
         run: |
           docker build \
-            --build-arg BASE_IMAGE=base-image:local \
+            --build-arg BASE_IMAGE=${{ github.event_name == 'pull_request' && 'base-image:local' || format('{0}/{1}/key4hep-images/{2}:latest', env.REGISTRY, github.repository_owner, matrix.image) }} \
             -t ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:ci \
             -f ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile \
             ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs
