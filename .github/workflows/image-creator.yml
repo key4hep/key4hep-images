@@ -79,31 +79,18 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}
       - name: Build base image locally
-        uses: docker/build-push-action@v6
-        with:
-          push: false
-          load: true
-          platforms: linux/amd64
-          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
-          file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile
-          tags: base-image:local
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}:buildcache
+        run: |
+          docker build \
+            -t base-image:local \
+            -f ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile \
+            ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
       - name: Build and load amd64 for testing
-        uses: docker/build-push-action@v6
-        with:
-          push: false
-          load: true
-          platforms: linux/amd64
-          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs
-          file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
-          build-args: |
-            BASE_IMAGE=base-image:local
-          build-contexts: |
-            base-image:local=docker-image://base-image:local
-          tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:ci
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:buildcache
-          cache-to: type=local,dest=/tmp/cvmfs-buildcache,mode=max
+        run: |
+          docker build \
+            --build-arg BASE_IMAGE=base-image:local \
+            -t ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:ci \
+            -f ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile \
+            ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs
       - name: Test cvmfs in image
         run: >-
           docker run --rm --privileged
@@ -122,5 +109,5 @@ jobs:
           #tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:latest
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=local,src=/tmp/cvmfs-buildcache
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:buildcache
           cache-to: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:buildcache,mode=max
