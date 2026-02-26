@@ -1,7 +1,7 @@
 # This workflow creates docker images that are then used for:
 #
 # - Key4hep packages CI
-# 
+#
 # All created images are then uploaded to GitHub Container registry
 
 name: Create images
@@ -43,8 +43,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}
-      - name: Build and Push
-        id: docker_build
+      - name: Build and push base image (multi-platform)
         uses: docker/build-push-action@v6
         with:
           push: ${{ github.event_name != 'pull_request' }}
@@ -56,39 +55,18 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}:buildcache
           cache-to: ${{ github.event_name != 'pull_request' && format('type=registry,ref={0}/{1}/key4hep-images/{2}:buildcache,mode=max', env.REGISTRY, github.repository_owner, matrix.image) || '' }}
-  build-cvmfs:
-    needs: build
-    strategy:
-      fail-fast: false
-      matrix:
-        image: ["alma9", "ubuntu22", "ubuntu24"]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to GHCR
-        uses: docker/login-action@v3
+      - name: Load amd64 base image locally
+        uses: docker/build-push-action@v6
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Docker Meta
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}
-      - name: Build base image locally
-        if: github.event_name == 'pull_request'
+          load: true
+          platforms: linux/amd64
+          context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
+          file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile
+          tags: base-image:local
+      - name: Build and load cvmfs amd64 for testing
         run: |
           docker build \
-            -t base-image:local \
-            -f ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile \
-            ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
-      - name: Build and load amd64 for testing
-        run: |
-          docker build \
-            --build-arg BASE_IMAGE=${{ github.event_name == 'pull_request' && 'base-image:local' || format('{0}/{1}/key4hep-images/{2}:latest', env.REGISTRY, github.repository_owner, matrix.image) }} \
+            --build-arg BASE_IMAGE=base-image:local \
             -t ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:ci \
             -f ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile \
             ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs
@@ -97,7 +75,7 @@ jobs:
           docker run --rm --privileged
           ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:ci
           /bin/bash -lc "ls -l /cvmfs/sw.hsf.org/ && ls /cvmfs/sw.hsf.org/ | grep -q ."
-      - name: Build and push all platforms
+      - name: Build and push cvmfs image (multi-platform)
         if: ${{ github.event_name != 'pull_request' }}
         uses: docker/build-push-action@v6
         with:
