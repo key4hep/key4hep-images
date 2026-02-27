@@ -26,7 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        image: ["alma9", "ubuntu22", "ubuntu24"]
+        image: ["alma9", "alma10", "ubuntu22", "ubuntu24"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
