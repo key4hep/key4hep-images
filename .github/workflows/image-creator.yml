@@ -50,7 +50,6 @@ jobs:
           platforms: linux/amd64, linux/arm64
           context: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile
-          #tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}:buildcache
@@ -85,7 +84,6 @@ jobs:
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile
           build-args: |
             BASE_IMAGE=${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}:latest
-          #tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}
           tags: ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:buildcache
