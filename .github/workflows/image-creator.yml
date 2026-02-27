@@ -55,6 +55,7 @@ jobs:
           cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}:buildcache
           cache-to: ${{ github.event_name != 'pull_request' && format('type=registry,ref={0}/{1}/key4hep-images/{2}:buildcache,mode=max', env.REGISTRY, github.repository_owner, matrix.image) || '' }}
       - name: Load amd64 base image locally
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
         uses: docker/build-push-action@v6
         with:
           load: true
@@ -63,6 +64,7 @@ jobs:
           file: ./Docker/${{ matrix.image }}/${{ matrix.image }}-build/Dockerfile
           tags: base-image:local
       - name: Build and load cvmfs amd64 for testing
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
         run: |
           docker build \
             --build-arg BASE_IMAGE=base-image:local \
@@ -70,6 +72,7 @@ jobs:
             -f ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs/Dockerfile \
             ./Docker/${{ matrix.image }}/${{ matrix.image }}-cvmfs
       - name: Test cvmfs in image
+        if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
         run: >-
           docker run --rm --privileged
           ${{ env.REGISTRY }}/${{ github.repository_owner }}/key4hep-images/${{ matrix.image }}-cvmfs:ci
