@@ -20,7 +20,7 @@ RUN dnf update -y && \
                    # Useful to have
                    strace \
                    # Needed for LCG
-                   motif motif-devel && \
+                   expat motif motif-devel && \
     # For building and CI
     dnf install -y ccache mold && \
     # dnf remove -y NetworkManager xorg-x11-fonts-ISO8859-1-100dpi dejavu-sans-fonts selinux-policy && \
