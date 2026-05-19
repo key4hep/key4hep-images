@@ -9,6 +9,7 @@ At the moment, these are the images that are built:
 - `alma10` and `alma10-cvmfs`, same as above for AlmaLinux 10.
 - `ubuntu22` and `ubuntu22-cvmfs`, same as above for Ubuntu 22.04.
 - `ubuntu24` and `ubuntu24-cvmfs`, same as above for Ubuntu 24.04.
+- `ubuntu26` and `ubuntu26-cvmfs`, same as above for Ubuntu 26.04.
 
 The images are deployed to `gitlab-registry.cern.ch` and `ghcr.io` and can be
 found under:
