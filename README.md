@@ -53,7 +53,7 @@ where for the login we have to use our Github username and for the password a
 classic token (refined is not supported at the moment of writing) with the
 permissions `read:packages`, `write:packages` and `delete:packages`.
 
-# How to use the cvmfs images on CI
+# How to use the cvmfs images in CI
 
 The following is an example of a minimal job that lists the contents of
 `/cvmfs/sw.hsf.org`:
