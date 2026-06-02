@@ -4,7 +4,7 @@ FROM ubuntu:26.04
 RUN apt update -y && \
     apt upgrade -y && \
     DEBIAN_FRONTEND=noninteractive apt install -y \
-    build-essential git python3 python3-pip vim unzip gfortran file curl wget pkg-config rsync tzdata libicu-dev libgl1-mesa-dev libglu1-mesa libglu1-mesa-dev libkrb5-dev ccache mold strace libmotif-dev \
+    build-essential git python3 python3-pip vim unzip gfortran file curl wget pkg-config rsync tzdata libicu-dev libgl1-mesa-dev libglu1-mesa libglu1-mesa-dev libkrb5-dev ccache mold strace libmotif-dev libxext-dev libdeflate0 \
     python3-boto3 python3-requests python3-yaml && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
