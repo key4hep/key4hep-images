@@ -15,7 +15,7 @@ RUN dnf update -y && \
                    # Needed by Spack
                    bzip2 unzip \
                    # Needed by LCG
-                   zlib-devel libuuid-devel \
+                   zlib-devel libuuid-devel lz4-devel \
                    # Useful to have
                    strace && \
     # For building and CI
