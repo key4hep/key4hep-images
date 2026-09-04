@@ -10,7 +10,7 @@ RUN dnf update -y && \
                    # Requirements
                    mesa-libGL mesa-libGL-devel mesa-libGLU mesa-libGLU-devel krb5-devel \
                    # Tools
-                   git patch vim wget epel-release \
+                   git make patch vim wget epel-release \
                    # For fetching commits of packages
                    python3-requests python3-yaml \
                    # Needed by Spack
