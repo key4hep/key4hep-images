@@ -13,9 +13,9 @@ RUN dnf update -y && \
                    # For fetching commits of packages
                    python3-requests python3-yaml \
                    # Needed by Spack
-                   bzip2 unzip zstd \
+                   bzip2 unzip \
                    # Needed by LCG
-                   zlib-devel libuuid-devel lz4-devel \
+                   zstd libzstd-devel zlib-devel libuuid-devel lz4-devel \
                    # Useful to have
                    strace && \
     # For building and CI
