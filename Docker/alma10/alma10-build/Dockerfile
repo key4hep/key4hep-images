@@ -8,6 +8,7 @@ RUN dnf update -y && \
                    glibc-headers glibc-devel diffutils \
                    # Requirements
                    mesa-libGL mesa-libGL-devel mesa-libGLU mesa-libGLU-devel krb5-devel \
+                   expat-devel libXmu libXi libXrandr \
                    # Tools
                    git patch vim wget epel-release \
                    # For fetching commits of packages
