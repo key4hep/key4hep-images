@@ -10,7 +10,7 @@ RUN dnf update -y && \
                    mesa-libGL mesa-libGL-devel mesa-libGLU mesa-libGLU-devel krb5-devel \
                    expat-devel libXmu libXi libXrandr libjpeg-turbo \
                    # Tools
-                   autoconf git patch vim wget epel-release \
+                   autoconf automake git make patch vim wget epel-release \
                    # For fetching commits of packages
                    python3-requests python3-yaml \
                    # Needed by Spack
