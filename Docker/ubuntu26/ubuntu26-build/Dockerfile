@@ -3,9 +3,9 @@ FROM ubuntu:26.04
 # tzdata is needed for setting the timezones; it's used to give the nightlies the right time and date
 RUN apt update -y && \
     apt upgrade -y && \
-    DEBIAN_FRONTEND=noninteractive apt install -y \
-    build-essential git python3 python3-pip vim unzip zstd gfortran file curl wget pkg-config rsync tzdata libicu-dev libgl1-mesa-dev libglu1-mesa libglu1-mesa-dev libkrb5-dev ccache mold strace libmotif-dev libxext-dev libxmu-dev libdeflate0 libjbig0 liblerc4 libwebp7 m4 liblz4-dev libzstd-dev \
-    python3-boto3 python3-requests python3-yaml && \
+    DEBIAN_FRONTEND=noninteractive apt install -y --no-install-recommends \
+    build-essential git python3 python3-pip vim unzip zstd gfortran file curl wget pkg-config rsync tzdata libicu-dev libgl1-mesa-dev libglu1-mesa libglu1-mesa-dev libkrb5-dev ccache mold strace libmotif-dev libxext-dev libxmu-dev libxpm4 libdeflate0 libjbig0 liblerc4 libwebp7 m4 liblz4-dev libzstd-dev gnupg openssh-client less \
+    python3-requests python3-yaml && \
     apt clean && \
     rm -rf /var/lib/apt/lists/*
 
